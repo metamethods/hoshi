@@ -1,0 +1,51 @@
+error:
+  interaction:
+    command_data:
+      missing: インタラクションにアプリケーションデータが含まれていません
+  event:
+    interaction:
+      generic: インタラクションの処理中に問題が発生しました
+      command:
+        unhandled: 未処理のコマンド「%{command_name}」
+  command:
+    generic: コマンドの実行中に問題が発生しました
+    option:
+      required_missing: 必須オプション「%{option_name}」が None です
+command:
+  ping:
+    name: ping
+    description: pong
+    response: pong!
+  ffmpeg:
+    name: ffmpeg
+    description: 指定された入力ファイルに対して ffmpeg コマンドを実行します
+    options:
+      input:
+        name: input
+        description: 使用するファイル
+      type:
+        name: type
+        description: 出力ファイルの形式
+      args:
+        name: args
+        description: ffmpeg コマンドに渡す追加引数
+      preset:
+        name: preset
+        description: 事前定義された ffmpeg 引数セットを使用します
+      output:
+        name: output
+        description: ffmpeg コマンドの出力を表示します
+  speechbubble:
+    name: speechbubble
+    description: 画像に吹き出しを追加します
+    options:
+      input:
+        name: input
+        description: 使用する画像ファイル
+  pixelsort:
+    name: pixelsort
+    description: ASDF ピクセルソートアルゴリズムを使用します
+    options:
+      input:
+        name: input
+        description: 使用する画像ファイル

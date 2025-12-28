@@ -1,0 +1,51 @@
+error:
+  interaction:
+    command_data:
+      missing: interaction missing application data
+  event:
+    interaction:
+      generic: something went wrong when handling the interaction
+      command:
+        unhandled: unhandled command "%{command_name}"
+  command:
+    generic: something went wrong when running the command
+    option:
+      required_missing: required option "%{option_name}" is None
+command:
+  ping:
+    name: ping
+    description: pong
+    response: pong!
+  ffmpeg:
+    name: ffmpeg
+    description: runs a ffmpeg command onto a given input file
+    options:
+      input:
+        name: input
+        description: file to be used
+      type:
+        name: type
+        description: the resulting file type
+      args:
+        name: args
+        description: extra arguments to be fed into the ffmpeg command
+      preset:
+        name: preset
+        description: use a preset ffmpeg arguments
+      output:
+        name: output
+        description: show ffmpeg command output
+  speechbubble:
+    name: speechbubble
+    description: add a speechbubble to an image
+    options:
+      input:
+        name: input
+        description: image file to be used
+  pixelsort:
+    name: pixelsort
+    description: use ASDF pixel sort algorithm
+    options:
+      input:
+        name: input
+        description: image file to be used
