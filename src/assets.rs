@@ -12,9 +12,14 @@ pub struct SoupAssets {
     pub mask: Image<BitPixel>,
 }
 
+pub struct Fonts {
+    pub impact: Font,
+}
+
 pub struct Assets {
     pub speech_bubble: SpeechBubbleAssets,
     pub soup: SoupAssets,
+    pub fonts: Fonts,
 }
 
 fn get_asset<'d, 'f, Path: AsRef<str>>(
@@ -43,6 +48,9 @@ pub fn load_assets(assets_dir: &Dir<'_>) -> Result<Assets, Box<dyn Error>> {
             mask: Image::from_bytes_inferred(
                 get_asset(assets_dir, "soup_bowl/mask.png")?.contents(),
             )?,
+        },
+        fonts: Fonts {
+            impact: Font::from_bytes(get_asset(assets_dir, "fonts/impact.ttf")?.contents(), 32.)?,
         },
     })
 }

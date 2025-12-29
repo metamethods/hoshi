@@ -9,6 +9,7 @@ pub mod ffmpeg;
 pub mod ping;
 pub mod soupify;
 pub mod speechbubble;
+pub mod text;
 
 pub fn commands() -> Vec<Command> {
     vec![
@@ -103,6 +104,30 @@ pub fn commands() -> Vec<Command> {
                     .name_localizations(get_localizations_of("command.soupify.options.user.name"))
                     .description_localizations(get_localizations_of(
                         "command.soupify.options.user.description",
+                    ))
+                    .required(true)
+                    .build(),
+            )
+            .integration_types(ALL_INTEGRATIONS)
+            .contexts(ALL_CONTEXTS)
+            .build(),
+        CommandBuilder::new("text", "add text to an image", CommandType::ChatInput)
+            .name_localizations(get_localizations_of("command.text.name"))
+            .description_localizations(get_localizations_of("command.text.description"))
+            .option(
+                AttachmentBuilder::new("input", "file to be used")
+                    .name_localizations(get_localizations_of("command.text.options.input.name"))
+                    .description_localizations(get_localizations_of(
+                        "command.text.options.input.description",
+                    ))
+                    .required(true)
+                    .build(),
+            )
+            .option(
+                StringBuilder::new("text", "the text to add")
+                    .name_localizations(get_localizations_of("command.text.options.text.name"))
+                    .description_localizations(get_localizations_of(
+                        "command.text.options.text.description",
                     ))
                     .required(true)
                     .build(),
