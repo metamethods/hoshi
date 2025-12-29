@@ -51,3 +51,13 @@ command:
       user:
         name: user
         description: the user to soupify
+  text:
+    name: text
+    description: add text to an image
+    options:
+      input:
+        name: input
+        description: file to be used
+      text:
+        name: text
+        description: the text to add
