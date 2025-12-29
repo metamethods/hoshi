@@ -21,6 +21,7 @@ async fn handle_aplication_command(
         "ffmpeg" => commands::ffmpeg::command(command_interaction, context).await,
         "speechbubble" => commands::speechbubble::command(command_interaction, context).await,
         "pixelsort" => commands::pixelsort::command(command_interaction, context).await,
+        "soupify" => commands::soupify::command(command_interaction, context).await,
         _ => Err(t_application_interaction_err!(
             command_interaction.application_interaction,
             "error.event.interaction.command.unhandled",

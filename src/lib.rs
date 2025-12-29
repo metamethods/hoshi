@@ -13,7 +13,7 @@ use include_dir::{Dir, include_dir};
 use reqwest::Client as ReqwestClient;
 use twilight_model::{
     application::interaction::InteractionContextType, channel::Attachment,
-    oauth::ApplicationIntegrationType,
+    oauth::ApplicationIntegrationType, user::User,
 };
 
 pub mod autocompletes;
@@ -24,6 +24,8 @@ pub mod interaction;
 pub mod session;
 
 pub static ASSETS_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/assets");
+
+pub const BASE_CDN_URL: &str = "https://cdn.discordapp.com";
 
 pub const ALL_CONTEXTS: [InteractionContextType; 3] = [
     InteractionContextType::Guild,
@@ -55,14 +57,29 @@ pub fn get_output_as_buffer(output: Output) -> Vec<u8> {
     buffer
 }
 
-pub async fn download_attachment(
-    attachment: &Attachment,
+pub fn get_avatar_url(user: &User) -> Option<String> {
+    let Some(avatar_hash) = user.avatar else {
+        return None;
+    };
+
+    Some(format!("{BASE_CDN_URL}/avatars/{}/{}.png", user.id, avatar_hash).into())
+}
+
+pub async fn download_from_url<Url: AsRef<str>>(
+    url: Url,
     reqwest_client: &ReqwestClient,
 ) -> Result<Bytes, Box<dyn Error + Send + Sync>> {
     Ok(reqwest_client
-        .get(attachment.url.as_str())
+        .get(url.as_ref())
         .send()
         .await?
         .bytes()
         .await?)
+}
+
+pub async fn download_attachment(
+    attachment: &Attachment,
+    reqwest_client: &ReqwestClient,
+) -> Result<Bytes, Box<dyn Error + Send + Sync>> {
+    download_from_url(&attachment.url, reqwest_client).await
 }

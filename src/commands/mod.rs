@@ -1,6 +1,6 @@
 use twilight_model::application::command::{Command, CommandType};
 use twilight_util::builder::command::{
-    AttachmentBuilder, BooleanBuilder, CommandBuilder, StringBuilder,
+    AttachmentBuilder, BooleanBuilder, CommandBuilder, StringBuilder, UserBuilder,
 };
 
 use crate::{ALL_CONTEXTS, ALL_INTEGRATIONS, get_localizations_of};
@@ -8,6 +8,7 @@ use crate::{ALL_CONTEXTS, ALL_INTEGRATIONS, get_localizations_of};
 pub mod ffmpeg;
 pub mod ping;
 pub mod pixelsort;
+pub mod soupify;
 pub mod speechbubble;
 
 pub fn commands() -> Vec<Command> {
@@ -114,5 +115,20 @@ pub fn commands() -> Vec<Command> {
         .integration_types(ALL_INTEGRATIONS)
         .contexts(ALL_CONTEXTS)
         .build(),
+        CommandBuilder::new("soupify", "soupify a user", CommandType::ChatInput)
+            .name_localizations(get_localizations_of("command.soupify.name"))
+            .description_localizations(get_localizations_of("command.soupify.description"))
+            .option(
+                UserBuilder::new("user", "the user to soupify")
+                    .name_localizations(get_localizations_of("command.soupify.options.user.name"))
+                    .description_localizations(get_localizations_of(
+                        "command.soupify.options.user.description",
+                    ))
+                    .required(true)
+                    .build(),
+            )
+            .integration_types(ALL_INTEGRATIONS)
+            .contexts(ALL_CONTEXTS)
+            .build(),
     ]
 }

@@ -1,16 +1,26 @@
 #[macro_export]
 macro_rules! t_application_interaction {
-    ($application_interaction:expr, $($rest:tt)*) => {
-        t!($($rest)*, locale = &$application_interaction.event_interaction.locale.clone().unwrap_or("en".into()))
+    ($application_interaction:expr, $($all:tt)*) => {
+        t!($($all)*, locale = &$application_interaction.event_interaction.locale.clone().unwrap_or("en".into()))
     };
 }
 
 #[macro_export]
 macro_rules! t_application_interaction_err {
-    ($application_interaction:expr, $($rest:tt)*) => {{
-        let localized_messasge: String = t_application_interaction!($application_interaction, $($rest)*).into();
+    ($application_interaction:expr, $($all:tt)*) => {{
+        let localized_messasge: String = t_application_interaction!($application_interaction, $($all)*).into();
         Box::<dyn std::error::Error + Send + Sync>::from(localized_messasge)
     }};
+}
+
+#[macro_export]
+macro_rules! t_ok_or_err {
+    ($option:expr, $application_interaction:expr, $($all:tt)*) => {
+        $option.ok_or(t_application_interaction_err!(
+            $application_interaction,
+            $($all)*
+        ))
+    };
 }
 
 #[macro_export]

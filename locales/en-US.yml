@@ -11,6 +11,8 @@ error:
     generic: something went wrong when running the command
     option:
       required_missing: required option "%{option_name}" is None
+    soupify:
+      missing_avatar: unable to get an avatar url for %{username}
 command:
   ping:
     name: ping
@@ -44,8 +46,15 @@ command:
         description: image file to be used
   pixelsort:
     name: pixelsort
-    description: use ASDF pixel sort algorithm
+    description: sort pixels on a given image
     options:
       input:
         name: input
         description: image file to be used
+  soupify:
+    name: soupify
+    description: soupify a user
+    options:
+      user:
+        name: user
+        description: the user to soupify

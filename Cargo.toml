@@ -7,9 +7,11 @@ edition = "2024"
 bytes = "1.11.0"
 dotenvy = "0.15.7"
 image = "0.25.9"
+imageproc = "0.25.0"
 imgfx = "0.3.3"
 include_dir = "0.7.4"
 reqwest = "0.12.28"
+ril = { version = "0.10.3", features = ["all"] }
 rust-i18n = "3.1.5"
 rustls = { version = "0.23.35", features = ["aws-lc-rs"] } # twilight wont work without this for some reason (on my pc)
 shell-words = "1.1.1"
