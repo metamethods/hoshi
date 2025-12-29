@@ -10,12 +10,12 @@ use twilight_model::channel::Attachment;
 
 use crate::download_attachment;
 
-type FileSessionError<T> = Result<T, Box<dyn Error + Send + Sync>>;
+type FileSessionResult<T> = Result<T, Box<dyn Error + Send + Sync>>;
 
 pub struct FileSession(pub TempDir);
 
 impl FileSession {
-    pub fn new() -> FileSessionError<Self> {
+    pub fn new() -> FileSessionResult<Self> {
         let dir = tempfile::tempdir()?;
         Ok(Self(dir))
     }
@@ -28,7 +28,7 @@ impl FileSession {
         &self,
         filename: Filename,
         bytes: &[u8],
-    ) -> FileSessionError<()> {
+    ) -> FileSessionResult<()> {
         File::create(self.path().join(filename.as_ref()))
             .await?
             .write_all(bytes)
@@ -40,7 +40,7 @@ impl FileSession {
         &self,
         attachment: &Attachment,
         reqwest_client: &ReqwestClient,
-    ) -> FileSessionError<()> {
+    ) -> FileSessionResult<()> {
         self.add_file(
             &attachment.filename,
             download_attachment(attachment, reqwest_client)
@@ -54,14 +54,14 @@ impl FileSession {
     pub async fn get_file<Filename: AsRef<str>>(
         &self,
         filename: Filename,
-    ) -> FileSessionError<File> {
+    ) -> FileSessionResult<File> {
         Ok(File::open(self.path().join(filename.as_ref())).await?)
     }
 
     pub async fn read_file<Filename: AsRef<str>>(
         &self,
         filename: Filename,
-    ) -> FileSessionError<Vec<u8>> {
+    ) -> FileSessionResult<Vec<u8>> {
         let mut reader = BufReader::new(self.get_file(filename).await?);
         let mut buffer = vec![];
         reader.read_to_end(&mut buffer).await?;
@@ -71,7 +71,7 @@ impl FileSession {
     pub async fn get_file_as_string<Filename: AsRef<str>>(
         &self,
         filename: Filename,
-    ) -> FileSessionError<String> {
+    ) -> FileSessionResult<String> {
         Ok(String::from_utf8(self.read_file(filename).await?)?)
     }
 }
