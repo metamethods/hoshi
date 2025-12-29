@@ -1,6 +1,6 @@
 use std::{env, sync::Arc};
 
-use hoshi::{BotResult, commands, context::BotContext, event};
+use hoshi::{ASSETS_DIR, BotResult, assets, commands, context::BotContext, event};
 use tokio::task::JoinSet;
 use twilight_gateway::{Config, ConfigBuilder, EventTypeFlags, Intents, Shard, StreamExt};
 use twilight_http::Client as HttpClient;
@@ -52,7 +52,11 @@ async fn main() -> BotResult<()> {
     )
     .await?;
 
-    let context = BotContext::new(app.id, http, reqwest::Client::new());
+    let Ok(assets) = assets::load_assets(&ASSETS_DIR) else {
+        return Err("failed to load assets".into());
+    };
+
+    let context = BotContext::new(app.id, http, reqwest::Client::new(), assets);
 
     let mut join_set = JoinSet::new();
 

@@ -16,6 +16,7 @@ use twilight_model::{
     oauth::ApplicationIntegrationType, user::User,
 };
 
+pub mod assets;
 pub mod autocompletes;
 pub mod commands;
 pub mod context;

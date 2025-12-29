@@ -4,7 +4,7 @@ use ril::prelude::*;
 use twilight_model::{channel::message::MessageFlags, http::attachment::Attachment};
 
 use crate::{
-    ASSETS_DIR, BotResult, context::BotContext, download_from_url, get_avatar_url,
+    BotResult, context::BotContext, download_from_url, get_avatar_url,
     interaction::ApplicationCommandInteraction,
 };
 
@@ -43,28 +43,12 @@ pub async fn command(
         ResizeAlgorithm::Lanczos3,
     );
 
-    let soup_bowl_inner_mask = Image::<BitPixel>::from_bytes_inferred(
-        t_ok_or_err!(
-            ASSETS_DIR.get_file("soup/inner_mask.png"),
-            command_interaction.application_interaction,
-            "error.command.generic"
-        )?
-        .contents(),
-    )?;
-
-    let mut soup_bowl_image = Image::<Rgba>::from_bytes_inferred(
-        t_ok_or_err!(
-            ASSETS_DIR.get_file("soup/bowl.png"),
-            command_interaction.application_interaction,
-            "error.command.generic"
-        )?
-        .contents(),
-    )?;
+    let mut soup_bowl_image = context.assets.soup.bowl.clone();
     soup_bowl_image.paste_with_mask(
         INNER_SOUP_TRANSFORM.0,
         INNER_SOUP_TRANSFORM.1,
         &avatar_image,
-        &soup_bowl_inner_mask,
+        &context.assets.soup.mask,
     );
 
     let mut soup_bowl_cursor = Cursor::new(vec![]);

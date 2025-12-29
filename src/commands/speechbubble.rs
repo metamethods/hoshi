@@ -1,11 +1,10 @@
 use std::io::Cursor;
 
-use image::{ImageFormat, imageops};
+use ril::prelude::*;
 use twilight_model::{channel::message::MessageFlags, http::attachment::Attachment};
 
 use crate::{
-    ASSETS_DIR, BotResult, context::BotContext, download_attachment,
-    interaction::ApplicationCommandInteraction,
+    BotResult, context::BotContext, download_attachment, interaction::ApplicationCommandInteraction,
 };
 
 pub async fn command(
@@ -27,28 +26,18 @@ pub async fn command(
     let image_buffer =
         download_attachment(&input_image_attachment, &context.reqwest_client).await?;
 
-    let mut image = image::load_from_memory(image_buffer.as_ref())?;
-    let bubble_image = image::load_from_memory(
-        ASSETS_DIR
-            .get_file("bubbles/tail_left.png")
-            .ok_or(t_application_interaction_err!(
-                command_interaction.application_interaction,
-                "error.command.generic",
-            ))?
-            .contents(),
-    )?;
+    let mut image = Image::<Rgba>::from_bytes_inferred(image_buffer.as_ref())?
+        .with_overlay_mode(OverlayMode::Merge);
+    let (image_width, image_height) = image.dimensions();
 
-    let bubble_image = bubble_image.resize_exact(
-        image.width(),
-        image.height() / 4,
-        imageops::FilterType::Lanczos3,
-    );
+    let mut speech_bubble = context.assets.speech_bubble.tail_left.clone();
+    speech_bubble.resize(image_width, image_height / 4, ResizeAlgorithm::Lanczos3);
 
-    imageops::overlay(&mut image, &bubble_image, 0, 0);
+    image.paste(0, 0, &speech_bubble);
 
     let mut image_cursor = Cursor::new(vec![]);
 
-    image.write_to(&mut image_cursor, ImageFormat::Png)?;
+    image.encode(ril::ImageFormat::Png, &mut image_cursor)?;
 
     command_interaction
         .update_response()
