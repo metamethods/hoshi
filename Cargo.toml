@@ -6,9 +6,6 @@ edition = "2024"
 [dependencies]
 bytes = "1.11.0"
 dotenvy = "0.15.7"
-image = "0.25.9"
-imageproc = "0.25.0"
-imgfx = "0.3.3"
 include_dir = "0.7.4"
 reqwest = "0.12.28"
 ril = { version = "0.10.3", features = ["all"] }

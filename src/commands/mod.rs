@@ -7,7 +7,6 @@ use crate::{ALL_CONTEXTS, ALL_INTEGRATIONS, get_localizations_of};
 
 pub mod ffmpeg;
 pub mod ping;
-pub mod pixelsort;
 pub mod soupify;
 pub mod speechbubble;
 
@@ -89,25 +88,6 @@ pub fn commands() -> Vec<Command> {
                 ))
                 .description_localizations(get_localizations_of(
                     "command.speechbubble.options.input.description",
-                ))
-                .required(true)
-                .build(),
-        )
-        .integration_types(ALL_INTEGRATIONS)
-        .contexts(ALL_CONTEXTS)
-        .build(),
-        CommandBuilder::new(
-            "pixelsort",
-            "use ASDF pixel sort algorithm",
-            CommandType::ChatInput,
-        )
-        .name_localizations(get_localizations_of("command.pixelsort.name"))
-        .description_localizations(get_localizations_of("command.pixelsort.description"))
-        .option(
-            AttachmentBuilder::new("input", "file to be used")
-                .name_localizations(get_localizations_of("command.pixelsort.options.input.name"))
-                .description_localizations(get_localizations_of(
-                    "command.pixelsort.options.input.description",
                 ))
                 .required(true)
                 .build(),

@@ -44,13 +44,6 @@ command:
       input:
         name: input
         description: image file to be used
-  pixelsort:
-    name: pixelsort
-    description: sort pixels on a given image
-    options:
-      input:
-        name: input
-        description: image file to be used
   soupify:
     name: soupify
     description: soupify a user
