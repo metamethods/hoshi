@@ -1,6 +1,6 @@
 use twilight_model::application::command::{Command, CommandType};
 use twilight_util::builder::command::{
-    AttachmentBuilder, BooleanBuilder, CommandBuilder, StringBuilder, UserBuilder,
+    AttachmentBuilder, BooleanBuilder, CommandBuilder, NumberBuilder, StringBuilder, UserBuilder,
 };
 
 use crate::{ALL_CONTEXTS, ALL_INTEGRATIONS, get_localizations_of};
@@ -130,6 +130,14 @@ pub fn commands() -> Vec<Command> {
                         "command.text.options.text.description",
                     ))
                     .required(true)
+                    .build(),
+            )
+            .option(
+                NumberBuilder::new("fontsize", "change the font size of the text")
+                    .name_localizations(get_localizations_of("command.text.options.fontsize.name"))
+                    .description_localizations(get_localizations_of(
+                        "command.text.options.fontsize.description",
+                    ))
                     .build(),
             )
             .integration_types(ALL_INTEGRATIONS)

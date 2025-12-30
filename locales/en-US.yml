@@ -61,3 +61,6 @@ command:
       text:
         name: text
         description: the text to add
+      fontsize:
+        name: fontsize
+        description: change the font size of the text

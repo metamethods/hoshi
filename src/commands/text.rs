@@ -30,25 +30,25 @@ pub async fn command(
                 "error.command.option.required_missing",
                 option_name = "text"
             ))?;
+    let font_size = command_interaction
+        .get_number_option("fontsize")
+        .unwrap_or(32.);
 
     let image_buffer =
         download_attachment(&input_image_attachment, &context.reqwest_client).await?;
 
-    let mut image = Image::<Rgba>::from_bytes_inferred(image_buffer.as_ref())?
-        .with_overlay_mode(OverlayMode::Merge);
-    let (image_width, image_height) = image.dimensions();
+    let mut image = Image::<Rgba>::from_bytes_inferred(image_buffer.as_ref())?;
+    let (image_width, _) = image.dimensions();
 
+    let text_segment = TextSegment::new(&context.assets.fonts.impact, text, Rgba::black())
+        .with_size(font_size as f32);
     let text_layout = TextLayout::new()
         .with_align(TextAlign::Center)
-        .with_basic_text(&context.assets.fonts.impact, text, Rgba::black());
-    let (text_layout_width, text_layout_height) = text_layout.dimensions();
-    let mut text_layout_image =
-        Image::new(text_layout_width, text_layout_height, Rgba::transparent());
+        .with_horizontal_anchor(HorizontalAnchor::Center)
+        .with_position(image_width / 2, 0)
+        .with_segment(&text_segment);
 
-    text_layout_image.draw(&text_layout);
-    text_layout_image.resize(image_width, image_height / 6, ResizeAlgorithm::Lanczos3);
-
-    image.paste(0, 0, &text_layout_image);
+    image.draw(&text_layout);
 
     let mut image_cursor = Cursor::new(vec![]);
 
