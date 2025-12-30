@@ -12,6 +12,11 @@ pub struct SoupAssets {
     pub mask: Image<BitPixel>,
 }
 
+pub struct SnowmanAssets {
+    pub snowman: Image<Rgba>,
+    pub mask: Image<BitPixel>,
+}
+
 pub struct Fonts {
     pub impact: Font,
 }
@@ -19,6 +24,7 @@ pub struct Fonts {
 pub struct Assets {
     pub speech_bubble: SpeechBubbleAssets,
     pub soup: SoupAssets,
+    pub snowman: SnowmanAssets,
     pub fonts: Fonts,
 }
 
@@ -47,6 +53,14 @@ pub fn load_assets(assets_dir: &Dir<'_>) -> Result<Assets, Box<dyn Error>> {
             )?,
             mask: Image::from_bytes_inferred(
                 get_asset(assets_dir, "soup_bowl/mask.png")?.contents(),
+            )?,
+        },
+        snowman: SnowmanAssets {
+            snowman: Image::from_bytes_inferred(
+                get_asset(assets_dir, "snowman/snowman.png")?.contents(),
+            )?,
+            mask: Image::from_bytes_inferred(
+                get_asset(assets_dir, "snowman/mask.png")?.contents(),
             )?,
         },
         fonts: Fonts {

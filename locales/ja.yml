@@ -53,6 +53,13 @@ command:
       user:
         name: ユーザー
         description: スープ化するユーザー
+  snowmanify:
+    name: スノーマン化
+    description: ユーザーを雪だるまに変える
+    options:
+      user:
+        name: ユーザー
+        description: 雪だるまに変えるユーザー
   text:
     name: テキスト追加
     description: 画像にテキストを追加

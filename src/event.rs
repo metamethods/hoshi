@@ -22,6 +22,7 @@ async fn handle_aplication_command(
         "ffmpeg" => commands::ffmpeg::command(command_interaction, context).await,
         "speechbubble" => commands::speechbubble::command(command_interaction, context).await,
         "soupify" => commands::soupify::command(command_interaction, context).await,
+        "snowmanify" => commands::snowman::command(command_interaction, context).await,
         "text" => commands::text::command(command_interaction, context).await,
         _ => Err(t_application_interaction!(
             command_interaction.application_interaction,

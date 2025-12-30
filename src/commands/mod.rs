@@ -7,6 +7,7 @@ use crate::{ALL_CONTEXTS, ALL_INTEGRATIONS, get_localizations_of};
 
 pub mod ffmpeg;
 pub mod ping;
+pub mod snowman;
 pub mod soupify;
 pub mod speechbubble;
 pub mod text;
@@ -111,6 +112,25 @@ pub fn commands() -> Vec<Command> {
             .integration_types(ALL_INTEGRATIONS)
             .contexts(ALL_CONTEXTS)
             .build(),
+        CommandBuilder::new(
+            "snowmanify",
+            "make a user into a snowman",
+            CommandType::ChatInput,
+        )
+        .name_localizations(get_localizations_of("command.snowmanify.name"))
+        .description_localizations(get_localizations_of("command.snowmanify.description"))
+        .option(
+            UserBuilder::new("user", "the user to turn into a snowman")
+                .name_localizations(get_localizations_of("command.snowmanify.options.user.name"))
+                .description_localizations(get_localizations_of(
+                    "command.snowmanify.options.user.description",
+                ))
+                .required(true)
+                .build(),
+        )
+        .integration_types(ALL_INTEGRATIONS)
+        .contexts(ALL_CONTEXTS)
+        .build(),
         CommandBuilder::new("text", "add text to an image", CommandType::ChatInput)
             .name_localizations(get_localizations_of("command.text.name"))
             .description_localizations(get_localizations_of("command.text.description"))

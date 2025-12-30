@@ -53,6 +53,13 @@ command:
       user:
         name: user
         description: the user to soupify
+  snowmanify:
+    name: snowmanify
+    description: make a user into a snowman
+    options:
+      user:
+        name: user
+        description: the user to turn into a snowman
   text:
     name: text
     description: add text to an image
