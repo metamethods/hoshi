@@ -32,7 +32,7 @@ async fn shard_handler(mut shard: Shard, context: BotContext) {
 
 #[tokio::main]
 async fn main() -> BotResult<()> {
-    dotenvy::dotenv()?;
+    let _ = dotenvy::dotenv();
 
     let token = env::var("DISCORD_TOKEN")?;
 
