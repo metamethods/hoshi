@@ -7,7 +7,6 @@ pub enum BotError {
     Response(InteractionResponseData),
     Message(String),
     String(String),
-    Any(Box<dyn std::error::Error + Send + Sync>),
 }
 
 impl From<String> for BotError {
@@ -30,60 +29,60 @@ impl<'a> From<Cow<'a, str>> for BotError {
 
 impl From<std::io::Error> for BotError {
     fn from(value: std::io::Error) -> Self {
-        BotError::Any(value.into())
+        BotError::String(format!("{value:#?}"))
     }
 }
 
 impl From<reqwest::Error> for BotError {
     fn from(value: reqwest::Error) -> Self {
-        BotError::Any(value.into())
+        BotError::String(format!("{value:#?}"))
     }
 }
 
 impl From<twilight_http::Error> for BotError {
     fn from(value: twilight_http::Error) -> Self {
-        BotError::Any(value.into())
+        BotError::String(format!("{value:#?}"))
     }
 }
 
 impl From<ril::Error> for BotError {
     fn from(value: ril::Error) -> Self {
-        BotError::Any(value.into())
+        BotError::String(format!("{value:#?}"))
     }
 }
 
 impl From<dotenvy::Error> for BotError {
     fn from(value: dotenvy::Error) -> Self {
-        BotError::Any(value.into())
+        BotError::String(format!("{value:#?}"))
     }
 }
 
 impl From<std::env::VarError> for BotError {
     fn from(value: std::env::VarError) -> Self {
-        BotError::Any(value.into())
+        BotError::String(format!("{value:#?}"))
     }
 }
 
 impl From<twilight_http::response::DeserializeBodyError> for BotError {
     fn from(value: twilight_http::response::DeserializeBodyError) -> Self {
-        BotError::Any(value.into())
+        BotError::String(format!("{value:#?}"))
     }
 }
 
 impl From<twilight_gateway::error::StartRecommendedError> for BotError {
     fn from(value: twilight_gateway::error::StartRecommendedError) -> Self {
-        BotError::Any(value.into())
+        BotError::String(format!("{value:#?}"))
     }
 }
 
 impl From<shell_words::ParseError> for BotError {
     fn from(value: shell_words::ParseError) -> Self {
-        BotError::Any(value.into())
+        BotError::String(format!("{value:#?}"))
     }
 }
 
 impl From<std::string::FromUtf8Error> for BotError {
     fn from(value: std::string::FromUtf8Error) -> Self {
-        BotError::Any(value.into())
+        BotError::String(format!("{value:#?}"))
     }
 }
