@@ -198,11 +198,7 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
             return None;
         };
 
-        if let Some(ref resolved) = self.command_data.resolved {
-            resolved.users.get(&value)
-        } else {
-            None
-        }
+        self.command_data.resolved.as_ref()?.users.get(&value)
     }
 
     pub fn get_channel_option<OptionName: AsRef<str>>(
@@ -213,11 +209,7 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
             return None;
         };
 
-        if let Some(ref resolved) = self.command_data.resolved {
-            resolved.channels.get(&value)
-        } else {
-            None
-        }
+        self.command_data.resolved.as_ref()?.channels.get(&value)
     }
 
     pub fn get_role_option<OptionName: AsRef<str>>(
@@ -228,11 +220,7 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
             return None;
         };
 
-        if let Some(ref resolved) = self.command_data.resolved {
-            resolved.roles.get(&value)
-        } else {
-            None
-        }
+        self.command_data.resolved.as_ref()?.roles.get(&value)
     }
 
     pub fn get_mentionable_option<OptionName: AsRef<str>>(
@@ -243,14 +231,12 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
             return None;
         };
 
-        if let Some(ref resolved) = self.command_data.resolved {
-            if let Some(user) = resolved.users.get(&value.cast()) {
-                Some(Mentionable::User(user))
-            } else if let Some(role) = resolved.roles.get(&value.cast()) {
-                Some(Mentionable::Role(role))
-            } else {
-                None
-            }
+        let resolved = self.command_data.resolved.as_ref()?;
+
+        if let Some(user) = resolved.users.get(&value.cast()) {
+            Some(Mentionable::User(user))
+        } else if let Some(role) = resolved.roles.get(&value.cast()) {
+            Some(Mentionable::Role(role))
         } else {
             None
         }
@@ -264,11 +250,7 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
             return None;
         };
 
-        if let Some(ref resolved) = self.command_data.resolved {
-            resolved.attachments.get(&value)
-        } else {
-            None
-        }
+        self.command_data.resolved.as_ref()?.attachments.get(&value)
     }
 
     pub async fn reply(&self, data: InteractionResponseData) -> BotResult<Response<EmptyBody>> {
