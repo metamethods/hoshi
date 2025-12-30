@@ -17,7 +17,8 @@ command:
   ping:
     name: ping
     description: pong
-    response: pong!
+    initial_response: ping...
+    response: pong! round trip took %{duration}ms
   ffmpeg:
     name: ffmpeg
     description: runs a ffmpeg command onto a given input file
