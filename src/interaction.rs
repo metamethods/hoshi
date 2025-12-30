@@ -150,76 +150,56 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
         &self,
         option_name: OptionName,
     ) -> Option<String> {
-        if let Some(CommandDataOption {
-            value: CommandOptionValue::String(value),
-            ..
-        }) = self.get_option(option_name)
-        {
-            Some(value.clone())
-        } else {
-            None
-        }
+        let CommandOptionValue::String(ref value) = self.get_option(option_name)?.value else {
+            return None;
+        };
+
+        Some(value.clone())
     }
 
     pub fn get_integer_option<OptionName: AsRef<str>>(
         &self,
         option_name: OptionName,
     ) -> Option<i64> {
-        if let Some(CommandDataOption {
-            value: CommandOptionValue::Integer(value),
-            ..
-        }) = self.get_option(option_name)
-        {
-            Some(*value)
-        } else {
-            None
-        }
+        let CommandOptionValue::Integer(value) = self.get_option(option_name)?.value else {
+            return None;
+        };
+
+        Some(value)
     }
 
     pub fn get_number_option<OptionName: AsRef<str>>(
         &self,
         option_name: OptionName,
     ) -> Option<f64> {
-        if let Some(CommandDataOption {
-            value: CommandOptionValue::Number(value),
-            ..
-        }) = self.get_option(option_name)
-        {
-            Some(*value)
-        } else {
-            None
-        }
+        let CommandOptionValue::Number(value) = self.get_option(option_name)?.value else {
+            return None;
+        };
+
+        Some(value)
     }
 
     pub fn get_boolean_option<OptionName: AsRef<str>>(
         &self,
         option_name: OptionName,
     ) -> Option<bool> {
-        if let Some(CommandDataOption {
-            value: CommandOptionValue::Boolean(value),
-            ..
-        }) = self.get_option(option_name)
-        {
-            Some(*value)
-        } else {
-            None
-        }
+        let CommandOptionValue::Boolean(value) = self.get_option(option_name)?.value else {
+            return None;
+        };
+
+        Some(value)
     }
 
     pub fn get_user_option<OptionName: AsRef<str>>(
         &self,
         option_name: OptionName,
     ) -> Option<&User> {
-        let Some(CommandDataOption {
-            value: CommandOptionValue::User(value),
-            ..
-        }) = self.get_option(option_name)
-        else {
+        let CommandOptionValue::User(value) = self.get_option(option_name)?.value else {
             return None;
         };
 
         if let Some(ref resolved) = self.command_data.resolved {
-            resolved.users.get(value)
+            resolved.users.get(&value)
         } else {
             None
         }
@@ -229,16 +209,12 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
         &self,
         option_name: OptionName,
     ) -> Option<&InteractionChannel> {
-        let Some(CommandDataOption {
-            value: CommandOptionValue::Channel(value),
-            ..
-        }) = self.get_option(option_name)
-        else {
+        let CommandOptionValue::Channel(value) = self.get_option(option_name)?.value else {
             return None;
         };
 
         if let Some(ref resolved) = self.command_data.resolved {
-            resolved.channels.get(value)
+            resolved.channels.get(&value)
         } else {
             None
         }
@@ -248,16 +224,12 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
         &self,
         option_name: OptionName,
     ) -> Option<&Role> {
-        let Some(CommandDataOption {
-            value: CommandOptionValue::Role(value),
-            ..
-        }) = self.get_option(option_name)
-        else {
+        let CommandOptionValue::Role(value) = self.get_option(option_name)?.value else {
             return None;
         };
 
         if let Some(ref resolved) = self.command_data.resolved {
-            resolved.roles.get(value)
+            resolved.roles.get(&value)
         } else {
             None
         }
@@ -267,11 +239,7 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
         &self,
         option_name: OptionName,
     ) -> Option<Mentionable<'_>> {
-        let Some(CommandDataOption {
-            value: CommandOptionValue::Mentionable(value),
-            ..
-        }) = self.get_option(option_name)
-        else {
+        let CommandOptionValue::Mentionable(value) = self.get_option(option_name)?.value else {
             return None;
         };
 
@@ -292,16 +260,12 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
         &self,
         option_name: OptionName,
     ) -> Option<&Attachment> {
-        let Some(CommandDataOption {
-            value: CommandOptionValue::Attachment(value),
-            ..
-        }) = self.get_option(option_name)
-        else {
+        let CommandOptionValue::Attachment(value) = self.get_option(option_name)?.value else {
             return None;
         };
 
         if let Some(ref resolved) = self.command_data.resolved {
-            resolved.attachments.get(value)
+            resolved.attachments.get(&value)
         } else {
             None
         }
