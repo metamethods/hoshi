@@ -14,7 +14,7 @@ macro_rules! t_application_interaction_err {
 }
 
 #[macro_export]
-macro_rules! t_ok_or_err {
+macro_rules! t_application_interaction_ok_or_err {
     ($option:expr, $application_interaction:expr, $($all:tt)*) => {
         $option.ok_or(t_application_interaction_err!(
             $application_interaction,

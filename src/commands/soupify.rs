@@ -18,14 +18,14 @@ pub async fn command(
         .defer_reply(MessageFlags::empty())
         .await?;
 
-    let user_input = t_ok_or_err!(
+    let user_input = t_application_interaction_ok_or_err!(
         command_interaction.get_user_option("user"),
         command_interaction.application_interaction,
         "error.command.option.required_missing",
         option_name = "user"
     )?;
 
-    let avatar_url = t_ok_or_err!(
+    let avatar_url = t_application_interaction_ok_or_err!(
         get_avatar_url(user_input),
         command_interaction.application_interaction,
         "error.command.soupify.missing_avatar",

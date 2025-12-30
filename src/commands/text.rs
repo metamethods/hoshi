@@ -15,21 +15,18 @@ pub async fn command(
         .defer_reply(MessageFlags::empty())
         .await?;
 
-    let input_image_attachment = command_interaction.get_attachment_option("input").ok_or(
-        t_application_interaction_err!(
-            command_interaction.application_interaction,
-            "error.command.option.required_missing",
-            option_name = "input"
-        ),
+    let input_image_attachment = t_application_interaction_ok_or_err!(
+        command_interaction.get_attachment_option("input"),
+        command_interaction.application_interaction,
+        "error.command.option.required_missing",
+        option_name = "input"
     )?;
-    let text =
-        command_interaction
-            .get_string_option("text")
-            .ok_or(t_application_interaction_err!(
-                command_interaction.application_interaction,
-                "error.command.option.required_missing",
-                option_name = "text"
-            ))?;
+    let text = t_application_interaction_ok_or_err!(
+        command_interaction.get_string_option("text"),
+        command_interaction.application_interaction,
+        "error.command.option.required_missing",
+        option_name = "text"
+    )?;
     let font_size = command_interaction
         .get_number_option("fontsize")
         .unwrap_or(32.);
