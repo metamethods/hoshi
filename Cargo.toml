@@ -15,7 +15,6 @@ rustls = { version = "0.23.35", features = ["aws-lc-rs"] } # twilight wont work 
 shell-words = "1.1.1"
 tempfile = "3.24.0"
 tokio = { version = "1.48.0", features = ["full"] }
-twilight-cache-inmemory = "0.17.1"
 twilight-gateway = "0.17.1"
 twilight-http = "0.17.1"
 twilight-model = "0.17.1"
