@@ -9,6 +9,7 @@ use twilight_util::builder::InteractionResponseDataBuilder;
 use crate::{
     BotResult, autocompletes, commands,
     context::BotContext,
+    error::BotError,
     interaction::{ApplicationCommandInteraction, ApplicationInteraction},
 };
 
@@ -110,25 +111,40 @@ pub async fn handle_event(event: Event, context: BotContext) -> BotResult<()> {
 
             match handle_interaction(&mut application_interaction, &context).await {
                 Err(error) => {
-                    let content = &format!(
-                        "{}\n```\n{error:?}\n```",
-                        t_application_interaction!(
-                            application_interaction,
-                            "error.event.interaction.generic"
-                        )
-                    );
+                    let response_data = match error {
+                        BotError::Response(response) => response,
+                        BotError::Message(message) => InteractionResponseDataBuilder::new()
+                            .content(message)
+                            .build(),
+                        BotError::String(string) => InteractionResponseDataBuilder::new()
+                            .content(format!(
+                                "{}\n```\n{string}\n```",
+                                t_application_interaction!(
+                                    application_interaction,
+                                    "error.event.interaction.generic"
+                                )
+                            ))
+                            .build(),
+                    };
 
-                    if application_interaction.deferred {
-                        application_interaction.followup().content(content).await?;
-                    } else {
+                    if application_interaction.is_deferred {
+                        let mut message_flags =
+                            response_data.flags.unwrap_or(MessageFlags::empty());
+
+                        if application_interaction.is_deferred_ephemeral {
+                            message_flags.insert(MessageFlags::EPHEMERAL);
+                        }
+
                         application_interaction
-                            .reply(
-                                InteractionResponseDataBuilder::new()
-                                    .content(content)
-                                    .flags(MessageFlags::EPHEMERAL)
-                                    .build(),
-                            )
+                            .followup()
+                            .content(response_data.content.unwrap_or(String::new()).as_str())
+                            .embeds(&response_data.embeds.unwrap_or(vec![]))
+                            .components(&response_data.components.unwrap_or(vec![]))
+                            .attachments(&response_data.attachments.unwrap_or(vec![]))
+                            .flags(message_flags)
                             .await?;
+                    } else {
+                        application_interaction.reply(response_data).await?;
                     }
                 }
                 _ => (),

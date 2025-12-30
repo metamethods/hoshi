@@ -26,7 +26,8 @@ pub enum Mentionable<'a> {
 pub struct ApplicationInteraction<'client> {
     pub event_interaction: Interaction,
     pub interaction_client: &'client InteractionClient<'client>,
-    pub deferred: bool,
+    pub is_deferred: bool,
+    pub is_deferred_ephemeral: bool,
 }
 
 impl<'client> ApplicationInteraction<'client> {
@@ -37,7 +38,8 @@ impl<'client> ApplicationInteraction<'client> {
         Self {
             event_interaction,
             interaction_client,
-            deferred: false,
+            is_deferred: false,
+            is_deferred_ephemeral: false,
         }
     }
 
@@ -90,7 +92,11 @@ impl<'client> ApplicationInteraction<'client> {
             )
             .await?;
 
-        self.deferred = true;
+        self.is_deferred = true;
+
+        if message_flags.contains(MessageFlags::EPHEMERAL) {
+            self.is_deferred_ephemeral = true;
+        }
 
         Ok(response)
     }
