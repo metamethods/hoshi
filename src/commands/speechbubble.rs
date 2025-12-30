@@ -15,12 +15,14 @@ pub async fn command(
         .defer_reply(MessageFlags::empty())
         .await?;
 
-    let input_image_attachment = t_application_interaction_ok_or_err!(
-        command_interaction.get_attachment_option("input"),
-        command_interaction.application_interaction,
-        "error.command.option.required_missing",
-        option_name = "input"
-    )?;
+    let input_image_attachment =
+        command_interaction
+            .get_attachment_option("input")
+            .ok_or(t_application_interaction!(
+                command_interaction.application_interaction,
+                "error.command.option.required_missing",
+                option_name = "input"
+            ))?;
 
     let image_buffer =
         download_attachment(&input_image_attachment, &context.reqwest_client).await?;

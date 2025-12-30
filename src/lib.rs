@@ -6,20 +6,21 @@ mod macros;
 
 i18n!("locales", fallback = "en-US");
 
-use std::{collections::HashMap, error::Error, process::Output};
+use std::{collections::HashMap, process::Output};
 
 use bytes::Bytes;
 use include_dir::{Dir, include_dir};
 use reqwest::Client as ReqwestClient;
 use twilight_model::{
     application::interaction::InteractionContextType, channel::Attachment,
-    oauth::ApplicationIntegrationType, user::User,
+    http::interaction::InteractionResponseData, oauth::ApplicationIntegrationType, user::User,
 };
 
 pub mod assets;
 pub mod autocompletes;
 pub mod commands;
 pub mod context;
+pub mod error;
 pub mod event;
 pub mod interaction;
 pub mod session;
@@ -39,7 +40,7 @@ pub const ALL_INTEGRATIONS: [ApplicationIntegrationType; 2] = [
     ApplicationIntegrationType::UserInstall,
 ];
 
-pub type BotResult<T> = Result<T, Box<dyn Error + Send + Sync>>;
+pub type BotResult<T> = std::result::Result<T, error::BotError>;
 
 pub fn get_localizations_of<Key: AsRef<str>>(key: Key) -> HashMap<String, String> {
     available_locales!()
@@ -69,7 +70,7 @@ pub fn get_avatar_url(user: &User) -> Option<String> {
 pub async fn download_from_url<Url: AsRef<str>>(
     url: Url,
     reqwest_client: &ReqwestClient,
-) -> Result<Bytes, Box<dyn Error + Send + Sync>> {
+) -> BotResult<Bytes> {
     Ok(reqwest_client
         .get(url.as_ref())
         .send()
@@ -81,6 +82,6 @@ pub async fn download_from_url<Url: AsRef<str>>(
 pub async fn download_attachment(
     attachment: &Attachment,
     reqwest_client: &ReqwestClient,
-) -> Result<Bytes, Box<dyn Error + Send + Sync>> {
+) -> BotResult<Bytes> {
     download_from_url(&attachment.url, reqwest_client).await
 }

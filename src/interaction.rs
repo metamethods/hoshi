@@ -16,7 +16,7 @@ use twilight_model::{
 };
 use twilight_util::builder::InteractionResponseDataBuilder;
 
-use crate::BotResult;
+use crate::{BotResult, error::BotError};
 
 pub enum Mentionable<'a> {
     User(&'a User),
@@ -120,11 +120,13 @@ impl<'app, 'client> ApplicationCommandInteraction<'app, 'client> {
             match &mut application_interaction.event_interaction.data {
                 Some(InteractionData::ApplicationCommand(command_data)) => command_data.clone(),
                 _ => {
-                    return Err(t_application_interaction!(
-                        application_interaction,
-                        "error.interaction.command_data.missing"
-                    )
-                    .into());
+                    return Err(BotError::String(
+                        t_application_interaction!(
+                            application_interaction,
+                            "error.interaction.command_data.missing"
+                        )
+                        .into(),
+                    ));
                 }
             };
 

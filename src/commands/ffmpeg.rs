@@ -19,18 +19,22 @@ pub async fn command(
         .defer_reply(MessageFlags::empty())
         .await?;
 
-    let input_file_attachment = t_application_interaction_ok_or_err!(
-        command_interaction.get_attachment_option("input"),
-        command_interaction.application_interaction,
-        "error.command.option.required_missing",
-        option_name = "input"
-    )?;
-    let new_file_type = t_application_interaction_ok_or_err!(
-        command_interaction.get_string_option("type"),
-        command_interaction.application_interaction,
-        "error.command.option.required_missing",
-        option_name = "input"
-    )?;
+    let input_file_attachment =
+        command_interaction
+            .get_attachment_option("input")
+            .ok_or(t_application_interaction!(
+                command_interaction.application_interaction,
+                "error.command.option.required_missing",
+                option_name = "input"
+            ))?;
+    let new_file_type =
+        command_interaction
+            .get_string_option("type")
+            .ok_or(t_application_interaction!(
+                command_interaction.application_interaction,
+                "error.command.option.required_missing",
+                option_name = "type"
+            ))?;
     let ffmpeg_arguments = command_interaction
         .get_string_option("args")
         .map(|args| args.clone());

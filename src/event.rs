@@ -22,12 +22,11 @@ async fn handle_aplication_command(
         "speechbubble" => commands::speechbubble::command(command_interaction, context).await,
         "soupify" => commands::soupify::command(command_interaction, context).await,
         "text" => commands::text::command(command_interaction, context).await,
-        _ => Err(t_application_interaction_err!(
+        _ => Err(t_application_interaction!(
             command_interaction.application_interaction,
             "error.event.interaction.command.unhandled",
             command_name = command_interaction.command_data.name
-        )
-        .into()),
+        ))?,
     }
 }
 

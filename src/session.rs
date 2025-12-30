@@ -1,4 +1,4 @@
-use std::{error::Error, path::PathBuf};
+use std::path::PathBuf;
 
 use reqwest::Client as ReqwestClient;
 use tempfile::TempDir;
@@ -8,14 +8,12 @@ use tokio::{
 };
 use twilight_model::channel::Attachment;
 
-use crate::download_attachment;
-
-type FileSessionResult<T> = Result<T, Box<dyn Error + Send + Sync>>;
+use crate::{BotResult, download_attachment};
 
 pub struct FileSession(pub TempDir);
 
 impl FileSession {
-    pub fn new() -> FileSessionResult<Self> {
+    pub fn new() -> BotResult<Self> {
         let dir = tempfile::tempdir()?;
         Ok(Self(dir))
     }
@@ -28,7 +26,7 @@ impl FileSession {
         &self,
         filename: Filename,
         bytes: &[u8],
-    ) -> FileSessionResult<()> {
+    ) -> BotResult<()> {
         File::create(self.path().join(filename.as_ref()))
             .await?
             .write_all(bytes)
@@ -40,7 +38,7 @@ impl FileSession {
         &self,
         attachment: &Attachment,
         reqwest_client: &ReqwestClient,
-    ) -> FileSessionResult<()> {
+    ) -> BotResult<()> {
         self.add_file(
             &attachment.filename,
             download_attachment(attachment, reqwest_client)
@@ -51,17 +49,11 @@ impl FileSession {
         Ok(())
     }
 
-    pub async fn get_file<Filename: AsRef<str>>(
-        &self,
-        filename: Filename,
-    ) -> FileSessionResult<File> {
+    pub async fn get_file<Filename: AsRef<str>>(&self, filename: Filename) -> BotResult<File> {
         Ok(File::open(self.path().join(filename.as_ref())).await?)
     }
 
-    pub async fn read_file<Filename: AsRef<str>>(
-        &self,
-        filename: Filename,
-    ) -> FileSessionResult<Vec<u8>> {
+    pub async fn read_file<Filename: AsRef<str>>(&self, filename: Filename) -> BotResult<Vec<u8>> {
         let mut reader = BufReader::new(self.get_file(filename).await?);
         let mut buffer = vec![];
         reader.read_to_end(&mut buffer).await?;
@@ -71,7 +63,7 @@ impl FileSession {
     pub async fn get_file_as_string<Filename: AsRef<str>>(
         &self,
         filename: Filename,
-    ) -> FileSessionResult<String> {
+    ) -> BotResult<String> {
         Ok(String::from_utf8(self.read_file(filename).await?)?)
     }
 }
