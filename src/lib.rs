@@ -13,7 +13,7 @@ use include_dir::{Dir, include_dir};
 use reqwest::Client as ReqwestClient;
 use twilight_model::{
     application::interaction::InteractionContextType, channel::Attachment,
-    http::interaction::InteractionResponseData, oauth::ApplicationIntegrationType, user::User,
+    oauth::ApplicationIntegrationType, user::User,
 };
 
 pub mod assets;
