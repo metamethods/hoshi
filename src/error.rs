@@ -86,3 +86,9 @@ impl From<std::string::FromUtf8Error> for BotError {
         BotError::String(format!("{value:#?}"))
     }
 }
+
+impl From<chrono::ParseError> for BotError {
+    fn from(value: chrono::ParseError) -> Self {
+        BotError::String(format!("{value:#?}"))
+    }
+}

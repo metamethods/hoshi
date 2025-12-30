@@ -13,12 +13,13 @@ error:
       required_missing: required option "%{option_name}" is None
     soupify:
       missing_avatar: unable to get an avatar url for %{username}
+
 command:
   ping:
     name: ping
     description: pong
     initial_response: ping...
-    response: pong! round trip took %{duration}ms
+    response: pong! taken %{duration}ms to send
   ffmpeg:
     name: ffmpeg
     description: runs a ffmpeg command onto a given input file

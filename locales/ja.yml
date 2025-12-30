@@ -1,63 +1,68 @@
 error:
   interaction:
     command_data:
-      missing: インタラクションにアプリケーションデータがありません
+      missing: アプリケーションデータがありません
   event:
     interaction:
-      generic: インタラクションの処理中にエラーが発生しました
+      generic: インタラクション処理中にエラーが発生しました
       command:
         unhandled: 未処理のコマンド "%{command_name}"
   command:
-    generic: コマンドの実行中にエラーが発生しました
+    generic: コマンド実行中にエラーが発生しました
     option:
-      required_missing: 必須オプション "%{option_name}" が None です
+      required_missing: 必須オプション "%{option_name}" が指定されていません
     soupify:
       missing_avatar: "%{username} のアバターURLを取得できません"
+
 command:
   ping:
-    name: ping
-    description: pong
-    response: pong!
+    name: ピング
+    description: ポン
+    initial_response: ピング中...
+    response: ポン！送信に %{duration}ms かかりました
   ffmpeg:
     name: ffmpeg
-    description: 指定された入力ファイルに対して ffmpeg コマンドを実行します
+    description: 入力ファイルに対してFFmpegコマンドを実行します
     options:
       input:
-        name: input
+        name: 入力
         description: 使用するファイル
       type:
-        name: type
-        description: 生成されるファイル形式
+        name: 形式
+        description: 出力ファイルの形式
       args:
-        name: args
-        description: ffmpeg コマンドに渡す追加引数
+        name: 引数
+        description: FFmpegコマンドに追加する引数
       preset:
-        name: preset
-        description: 事前定義された ffmpeg 引数を使用
+        name: プリセット
+        description: FFmpeg用プリセット引数を使用
       output:
-        name: output
-        description: ffmpeg コマンドの出力を表示
+        name: 出力
+        description: FFmpegコマンドの出力を表示
   speechbubble:
-    name: speechbubble
-    description: 画像に吹き出しを追加します
+    name: 吹き出し追加
+    description: 画像に吹き出しを追加
     options:
       input:
-        name: input
+        name: 入力
         description: 使用する画像ファイル
   soupify:
-    name: soupify
-    description: ユーザーをスープ化します
+    name: スープ化
+    description: ユーザーをスープ化
     options:
       user:
-        name: user
+        name: ユーザー
         description: スープ化するユーザー
   text:
-    name: text
-    description: 画像にテキストを追加します
+    name: テキスト追加
+    description: 画像にテキストを追加
     options:
       input:
-        name: input
+        name: 入力
         description: 使用するファイル
       text:
-        name: text
+        name: テキスト
         description: 追加するテキスト
+      fontsize:
+        name: フォントサイズ
+        description: テキストのフォントサイズを変更
