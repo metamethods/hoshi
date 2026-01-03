@@ -6,24 +6,6 @@ macro_rules! t_application_interaction {
 }
 
 #[macro_export]
-macro_rules! t_application_interaction_err {
-    ($application_interaction:expr, $($all:tt)*) => {{
-        let localized_messasge: String = t_application_interaction!($application_interaction, $($all)*).into();
-        Box::<dyn std::error::Error + Send + Sync>::from(localized_messasge)
-    }};
-}
-
-#[macro_export]
-macro_rules! t_application_interaction_ok_or_err {
-    ($option:expr, $application_interaction:expr, $($all:tt)*) => {
-        $option.ok_or(t_application_interaction_err!(
-            $application_interaction,
-            $($all)*
-        ))
-    };
-}
-
-#[macro_export]
 macro_rules! command_option_choice_vec {
     [$($v:literal),*] => {
         vec![$(
