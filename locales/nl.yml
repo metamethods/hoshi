@@ -1,0 +1,75 @@
+error:
+  interaction:
+    command_data:
+      missing: interactie ontbreekt applicatiegegevens
+  event:
+    interaction:
+      generic: er is iets misgegaan tijdens het verwerken van de interactie
+      command:
+        unhandled: niet-verwerkte opdracht "%{command_name}"
+  command:
+    generic: er is iets misgegaan tijdens het uitvoeren van de opdracht
+    option:
+      required_missing: verplichte optie "%{option_name}" ontbreekt
+    soupify:
+      missing_avatar: kan geen avatar-URL verkrijgen voor %{username}
+
+command:
+  ping:
+    name: ping
+    description: pong
+    initial_response: ping...
+    response: pong! duurde %{duration}ms om te versturen
+  ffmpeg:
+    name: ffmpeg
+    description: voert een ffmpeg opdracht uit op een bestand
+    options:
+      input:
+        name: invoer
+        description: te gebruiken bestand
+      type:
+        name: type
+        description: de resulterende bestandstype
+      args:
+        name: argumenten
+        description: extra argumenten voor de ffmpeg-opdracht
+      preset:
+        name: preset
+        description: te gebruiken ffmpeg-preset
+      output:
+        name: uitvoer
+        description: uitvoer tonen van ffmpeg-opdracht
+  speechbubble:
+    name: tekstballon
+    description: voeg een tekstballon toe aan een afbeelding
+    options:
+      input:
+        name: invoer
+        description: te gebruiken bestand
+  soupify:
+    name: soepifieer
+    description: soepifieer een gebruiker
+    options:
+      user:
+        name: gebruiker
+        description: te soepifiëren gebruiker
+  snowmanify:
+    name: sneeuwpopifieer
+    description: verander een gebruiker in een sneeuwpop
+    options:
+      user:
+        name: gebruiker
+        description: gebruiker om in een sneeuwpop te veranderen
+  text:
+    name: tekst
+    description: voeg tekst toe aan een afbeelding
+    options:
+      input:
+        name: invoer
+        description: te gebruiken bestand
+      text:
+        name: tekst
+        description: de tekst om toe te voegen
+      fontsize:
+        name: lettergrootte
+        description: verander de grootte van de tekst
