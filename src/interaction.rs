@@ -102,10 +102,6 @@ impl<'client> ApplicationInteraction<'client> {
             .response(&self.event_interaction.token)
             .await?)
     }
-
-    pub async fn is_defered(&self) -> BotResult<bool> {
-        Ok(true)
-    }
 }
 
 pub struct ApplicationCommandInteraction<'app, 'client> {
