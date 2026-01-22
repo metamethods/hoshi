@@ -21,7 +21,7 @@ pub mod autocompletes;
 pub mod commands;
 pub mod context;
 pub mod error;
-pub mod event;
+pub mod events;
 pub mod interaction;
 pub mod session;
 

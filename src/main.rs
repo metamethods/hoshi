@@ -1,6 +1,6 @@
 use std::{env, sync::Arc};
 
-use hoshi::{ASSETS_DIR, BotResult, assets, commands, context::BotContext, event};
+use hoshi::{ASSETS_DIR, BotResult, assets, commands, context::BotContext, events};
 use tokio::task::JoinSet;
 use twilight_gateway::{Config, ConfigBuilder, EventTypeFlags, Intents, Shard, StreamExt};
 use twilight_http::Client as HttpClient;
@@ -22,7 +22,7 @@ async fn shard_handler(mut shard: Shard, context: BotContext) {
             let context = context.clone();
 
             async move {
-                if let Err(error) = event::handle_event(event, context).await {
+                if let Err(error) = events::handle_event(event, context).await {
                     eprintln!("{error:?}");
                 }
             }
