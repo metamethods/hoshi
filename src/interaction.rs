@@ -16,12 +16,7 @@ use twilight_model::{
 };
 use twilight_util::builder::InteractionResponseDataBuilder;
 
-use crate::{BotResult, error::BotError};
-
-pub enum Mentionable<'a> {
-    User(&'a User),
-    Role(&'a Role),
-}
+use crate::{BotResult, Mentionable, error::BotError};
 
 pub struct ApplicationInteraction<'client> {
     pub event_interaction: Interaction,

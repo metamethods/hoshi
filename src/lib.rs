@@ -12,7 +12,7 @@ use bytes::Bytes;
 use include_dir::{Dir, include_dir};
 use reqwest::Client as ReqwestClient;
 use twilight_model::{
-    application::interaction::InteractionContextType, channel::Attachment,
+    application::interaction::InteractionContextType, channel::Attachment, guild::Role,
     oauth::ApplicationIntegrationType, user::User,
 };
 
@@ -41,6 +41,11 @@ pub const ALL_INTEGRATIONS: [ApplicationIntegrationType; 2] = [
 ];
 
 pub type BotResult<T> = std::result::Result<T, error::BotError>;
+
+pub enum Mentionable<'a> {
+    User(&'a User),
+    Role(&'a Role),
+}
 
 pub fn get_localizations_of<Key: AsRef<str>>(key: Key) -> HashMap<String, String> {
     available_locales!()
