@@ -1,4 +1,4 @@
-use std::{env, sync::Arc};
+use std::{env, sync::Arc, time::Duration};
 
 use hoshi::{ASSETS_DIR, BotResult, assets, commands, context::BotContext, events};
 use tokio::task::JoinSet;
@@ -30,33 +30,15 @@ async fn shard_handler(mut shard: Shard, context: BotContext) {
     }
 }
 
-#[tokio::main]
-async fn main() -> BotResult<()> {
-    let _ = dotenvy::dotenv();
-
-    let token = env::var("DISCORD_TOKEN")?;
-
-    let http = Arc::new(HttpClient::new(token.clone()));
-
-    let app = http.current_user_application().await?.model().await?;
-    let http_interaction = http.interaction(app.id);
-
-    http_interaction
-        .set_global_commands(&commands::commands())
-        .await?;
-
+async fn reshard(http: &Arc<HttpClient>, config: Config, context: BotContext) -> BotResult<()> {
     let shards = twilight_gateway::create_recommended(
         &http,
-        Config::new(token.clone(), INTENTS),
+        config, //Config::new(token.clone(), INTENTS),
         |_, builder: ConfigBuilder| builder.build(),
     )
     .await?;
 
-    let Ok(assets) = assets::load_assets(&ASSETS_DIR) else {
-        return Err("failed to load assets".into());
-    };
-
-    let context = BotContext::new(app.id, http, reqwest::Client::new(), assets);
+    println!("spawning {} shard(s)", shards.len());
 
     let mut join_set = JoinSet::new();
 
@@ -67,4 +49,34 @@ async fn main() -> BotResult<()> {
     join_set.join_all().await;
 
     Ok(())
+}
+
+#[tokio::main]
+async fn main() -> BotResult<()> {
+    let _ = dotenvy::dotenv();
+
+    let token = env::var("DISCORD_TOKEN")?;
+
+    let Ok(assets) = assets::load_assets(&ASSETS_DIR) else {
+        return Err("failed to load assets".into());
+    };
+
+    let http = Arc::new(HttpClient::new(token.clone()));
+
+    let app = http.current_user_application().await?.model().await?;
+    let http_interaction = http.interaction(app.id);
+
+    http_interaction
+        .set_global_commands(&commands::commands())
+        .await?;
+
+    let context = BotContext::new(app.id, http.clone(), reqwest::Client::new(), assets);
+    let config = Config::new(token.clone(), INTENTS);
+
+    loop {
+        tokio::select! {
+            _ = reshard(&http, config.clone(), context.clone()) => {}
+            _ = tokio::time::sleep(Duration::from_hours(24)) => {}
+        }
+    }
 }
