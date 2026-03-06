@@ -1,0 +1,37 @@
+errors:
+    generic: 問題が発生しました
+    unhandled: '"%{x}" は適切に処理されませんでした。実装が不足している可能性があります'
+    option:
+        missing: 'オプション "%{name}" が指定されていません'
+
+components:
+    error:
+        content: >-
+            予期しないエラーが発生しました
+            ```%{error}```
+
+            -# インタラクションID: %{interaction_id}
+    ping:
+        content: "往復リクエストの完了まで %{round_trip_time}ms かかりました\n-# 片道リクエストは %{one_way_trip_time}ms かかりました"
+
+commands:
+    ping:
+        name: ping
+        description: ポン！
+    roll:
+        name: roll
+        description: 指定した範囲でランダムな数値を生成します
+        options:
+            range:
+                name: range
+                description: 生成する範囲 (min..max の形式)
+        errors:
+            invalid_syntax: 構文が無効です。min と max が数値である min..max の形式で指定してください
+            min_gt_max: 下限が上限より大きいため、ロールできません
+
+    echo:
+        name: メッセージを繰り返す
+
+    greet:
+        name: 挨拶
+        response: こんにちは <@%{user_id}>！

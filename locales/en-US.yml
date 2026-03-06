@@ -1,0 +1,42 @@
+errors:
+    generic: something went wrong
+    unhandled: '"%{x}" was not handled properly; not implemented (probably)'
+    option:
+        missing: 'missing option "%{name}"'
+
+components:
+    error:
+        content: >-
+            an unexpected error has occured
+            ```%{error}```
+
+            -# interaction id: %{interaction_id}
+    ping:
+        content: "took %{round_trip_time}ms for round-trip request to finish\n-# one-way trip request took %{one_way_trip_time}ms"
+
+commands:
+    ping:
+        name: ping
+        description: pong!
+    roll:
+        name: roll
+        description: roll from a given range
+        options:
+            range:
+                name: range
+                description: the range to roll from (form of min..max)
+        errors:
+            invalid_syntax: invalid syntax; must be in form of min..max where min and max are both numbers
+            min_gt_max: lower bound is greater than the upper bound; unable to roll with such bounds
+
+    echo:
+        name: Echo Message
+
+    greet:
+        name: Greet
+        response: hello <@%{user_id}>!
+
+    # debug commands
+    error:
+        name: error
+        description: deliberately error

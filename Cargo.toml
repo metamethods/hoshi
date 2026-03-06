@@ -1,0 +1,17 @@
+[package]
+name = "hoshi"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+dotenvy = "0.15.7"
+envy = "0.4.2"
+rand = "0.10.0"
+rust-i18n = "3.1.5"
+rustls = { version = "0.23.37", features = ["aws-lc-rs"] }
+serde = { version = "1.0.228", features = ["derive"] }
+tokio = { version = "1.49.0", features = ["rt-multi-thread", "macros", "signal", "time", "sync"] }
+twilight-gateway = "0.17.1"
+twilight-http = "0.17.1"
+twilight-model = "0.17.1"
+twilight-util = { version = "0.17.0", features = ["builder"] }
